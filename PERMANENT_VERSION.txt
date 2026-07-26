@@ -1,0 +1,5 @@
+﻿Permanent baseline locked on: 2026-04-07 13:03:49 -04:00
+Source file: index.html
+Stable copy: index.permanent.html
+Archive copy: versions\index_20260407_130349.html
+SHA256: 3D0BC34AE7EF58C967A54F57D54F61A94FBA736A6C40A667E0CF1B828AE5ADDA
