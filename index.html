@@ -527,6 +527,7 @@
     top: 7.5%;
     right: 2%;
     width: 46%;
+    max-height: 84%;
     display: flex;
     flex-direction: column;
     gap: 0.8em;
@@ -537,6 +538,7 @@
     background: color-mix(in srgb, var(--panel) 96%, #111);
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.65);
     font-size: clamp(9px, 1.25vh, 16px);
+    overflow-y: auto;
   }
   .portrait-settings-title {
     display: flex;
@@ -558,6 +560,35 @@
   .portrait-settings-panel input {
     grid-column: 1 / -1;
     width: 100%;
+  }
+  .portrait-gradient-setting {
+    display: grid;
+    grid-template-columns: 1fr auto auto auto;
+    align-items: center;
+    gap: 0.55em;
+  }
+  .portrait-gradient-setting strong {
+    font-weight: 700;
+  }
+  .portrait-gradient-setting input[type="color"] {
+    grid-column: auto;
+    width: 3.25em;
+    height: 2.35em;
+    padding: 0.12em;
+    border: 1px solid rgba(255, 229, 158, 0.75);
+    border-radius: 7px;
+    background: rgba(255, 255, 255, 0.12);
+    cursor: pointer;
+  }
+  .portrait-gradient-setting button {
+    min-width: 2.6em;
+    height: 2.35em;
+    border: 1px solid rgba(255, 220, 133, 0.62);
+    border-radius: 7px;
+    color: #fff;
+    background: color-mix(in srgb, var(--button) 88%, #111);
+    font: inherit;
+    cursor: pointer;
   }
   .portrait-zoom-actions {
     display: grid;
@@ -591,10 +622,11 @@
     padding: 1.1% 0.7%;
     overflow-y: auto;
     scrollbar-width: thin;
-    border: 1px solid rgba(255, 214, 121, 0.52);
+    border: 0;
     border-radius: 10px;
-    background: color-mix(in srgb, var(--panel) 58%, transparent);
-    backdrop-filter: blur(4px);
+    background: transparent;
+    backdrop-filter: none;
+    box-shadow: none;
   }
   .portrait-tool {
     flex: 0 0 auto;
@@ -829,6 +861,12 @@
         <option value="newyear">New Year</option>
       </select>
     </label>
+    <div class="portrait-gradient-setting" aria-label="Gradient colors">
+      <strong>Gradient colors</strong>
+      <input id="portraitGradientStartColor" type="color" value="#4da3ff" aria-label="Gradient start color">
+      <button id="portraitGradientSwapBtn" type="button" aria-label="Swap gradient colors" title="Swap gradient colors">⇄</button>
+      <input id="portraitGradientEndColor" type="color" value="#ff3b30" aria-label="Gradient end color">
+    </div>
     <label>Canvas zoom <output id="portraitZoomLabel">100%</output>
       <input id="portraitZoomRange" type="range" min="20" max="400" step="5" value="100">
     </label>
@@ -1119,6 +1157,9 @@
   const portraitLineRange = document.getElementById('portraitLineRange');
   const portraitLineLabel = document.getElementById('portraitLineLabel');
   const portraitThemeSelect = document.getElementById('portraitThemeSelect');
+  const portraitGradientStartColor = document.getElementById('portraitGradientStartColor');
+  const portraitGradientEndColor = document.getElementById('portraitGradientEndColor');
+  const portraitGradientSwapBtn = document.getElementById('portraitGradientSwapBtn');
   const portraitZoomRange = document.getElementById('portraitZoomRange');
   const portraitZoomLabel = document.getElementById('portraitZoomLabel');
   const portraitZoomOutBtn = document.getElementById('portraitZoomOutBtn');
@@ -3240,6 +3281,39 @@
       setStatus(`Seasonal GUI changed to ${THEME_NAMES[document.body.dataset.theme] || 'selected theme'}.`);
     });
   }
+  if (portraitGradientStartColor) {
+    portraitGradientStartColor.addEventListener('input', (event) => {
+      const parsed = parseHexColor(event.target.value);
+      if (!parsed) return;
+      gradientStartColor = parsed;
+      gradientStartColorInput.value = event.target.value;
+      setTool('gradient');
+      setStatus('Gradient start color updated.');
+    });
+  }
+  if (portraitGradientEndColor) {
+    portraitGradientEndColor.addEventListener('input', (event) => {
+      const parsed = parseHexColor(event.target.value);
+      if (!parsed) return;
+      gradientEndColor = parsed;
+      gradientEndColorInput.value = event.target.value;
+      setTool('gradient');
+      setStatus('Gradient end color updated.');
+    });
+  }
+  if (portraitGradientSwapBtn) {
+    portraitGradientSwapBtn.addEventListener('click', () => {
+      const previousStart = gradientStartColor;
+      gradientStartColor = gradientEndColor;
+      gradientEndColor = previousStart;
+      gradientStartColorInput.value = toHex(gradientStartColor);
+      gradientEndColorInput.value = toHex(gradientEndColor);
+      portraitGradientStartColor.value = gradientStartColorInput.value;
+      portraitGradientEndColor.value = gradientEndColorInput.value;
+      setTool('gradient');
+      setStatus('Gradient colors swapped.');
+    });
+  }
   if (portraitZoomRange) {
     portraitZoomRange.addEventListener('input', (event) => {
       applyCanvasScale((parseInt(event.target.value, 10) || 100) / 100, {
@@ -3288,12 +3362,14 @@
     const parsed = parseHexColor(e.target.value);
     if (!parsed) return;
     gradientStartColor = parsed;
+    if (portraitGradientStartColor) portraitGradientStartColor.value = e.target.value;
   });
 
   gradientEndColorInput.addEventListener('input', (e) => {
     const parsed = parseHexColor(e.target.value);
     if (!parsed) return;
     gradientEndColor = parsed;
+    if (portraitGradientEndColor) portraitGradientEndColor.value = e.target.value;
   });
 
   gradientShapeSelect.addEventListener('change', (e) => {
@@ -3899,6 +3975,8 @@
     gradientAngleLabel.textContent = gradientAngle;
     gradientStartColorInput.value = toHex(gradientStartColor);
     gradientEndColorInput.value = toHex(gradientEndColor);
+    if (portraitGradientStartColor) portraitGradientStartColor.value = gradientStartColorInput.value;
+    if (portraitGradientEndColor) portraitGradientEndColor.value = gradientEndColorInput.value;
     gradientShapeSelect.value = gradientShape;
     customColor.value = toHex(currentColor);
     convertUploadsToggle.checked = convertUploadsEnabled;
