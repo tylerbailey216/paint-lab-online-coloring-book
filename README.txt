@@ -39,7 +39,7 @@ Core tools
 - Custom color picker plus preset palette.
 - Fill controls: tolerance and line threshold.
 - Gradient controls: shape (Linear/Radial/Diamond), angle, and start/end colors.
-- The portrait Settings panel provides compact start/end gradient color wells plus a one-tap color swap.
+- The portrait Settings panel provides labeled START/END gradient color wells, a live preview, and a high-contrast one-tap SWAP control.
 - Gradient is boundary-locked under line art and will not paint over outlines.
 - Converter controls: edge threshold, line thickness, and despeckle size.
 - Mouse, touch, and stylus drawing support.
