@@ -52,8 +52,13 @@ Notes
 Seasonal GUI themes
 - The interface selects a seasonal GUI automatically from the current date.
 - Automatic themes include Spring, Summer, Autumn, Winter, Love, Lucky, Halloween, and New Year.
+- Each automatic theme uses its matching design from `GUI Themes` as a responsive decorative backdrop.
 - Users can preview or keep a specific GUI from the Seasonal GUI selector.
 - The selected preference is stored locally in the browser.
+
+Coloring page navigation
+- The current B&W page is always shown in the page dropdown above the canvas.
+- Use the visible left/right buttons, the dropdown, arrow keys, or the Images tab to change pages.
 
 Keyboard shortcuts
 - B = Brush, F = Fill, G = Gradient, E = Eraser, I = Eyedropper
