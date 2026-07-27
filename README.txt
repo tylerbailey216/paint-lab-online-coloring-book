@@ -1,6 +1,6 @@
 ﻿Paint Lab Coloring App (Portable)
 
-Build: 2026.07.27.1
+Build: 2026.07.27.2
 
 How to run
 - Double-click "Start Paint Lab Coloring App.cmd" to launch in your default browser.
