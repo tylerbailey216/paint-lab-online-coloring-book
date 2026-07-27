@@ -330,7 +330,7 @@
     min-height: 100vh;
     overflow: hidden;
     display: grid;
-    place-items: center;
+    place-items: start center;
     background:
       radial-gradient(circle at 50% 30%, #432263 0, #180b2a 52%, #08040f 100%);
   }
@@ -491,12 +491,16 @@
     z-index: 8;
     left: 2%;
     right: 2%;
-    top: 3.05%;
-    height: 3.7%;
+    top: 1.3%;
+    height: 4.9%;
     display: flex;
     align-items: center;
     gap: 1.2%;
-    padding: 0 1.8%;
+    padding: 0 1.4%;
+    border: 1px solid rgba(255, 220, 133, 0.58);
+    border-radius: 9px;
+    background: color-mix(in srgb, var(--panel) 92%, transparent);
+    backdrop-filter: blur(7px);
     color: #fff1a4;
     font-size: clamp(10px, 1.25vh, 18px);
     text-shadow: 0 1px 3px #000;
@@ -505,6 +509,9 @@
     margin-right: auto;
     font-weight: 900;
     letter-spacing: 0.08em;
+  }
+  .compact-label {
+    display: none;
   }
   .portrait-menubar button {
     border: 1px solid rgba(255, 220, 133, 0.5);
@@ -556,7 +563,7 @@
     position: absolute;
     z-index: 7;
     left: 1.85%;
-    top: 8.1%;
+    top: 7.7%;
     width: 17.2%;
     bottom: 13.1%;
     display: flex;
@@ -602,7 +609,7 @@
   }
   body.artwork-shell .canvas-wrap {
     left: 21.4%;
-    top: 7.75%;
+    top: 7.7%;
     right: 1.8%;
     bottom: 31.15%;
   }
@@ -696,10 +703,28 @@
   }
   @media (max-width: 540px) {
     .portrait-menubar {
+      top: 1%;
+      height: 5.4%;
+      gap: 5px;
       font-size: 9px;
     }
     .portrait-menubar button {
-      padding-inline: 0.45em;
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      font-size: 14px;
+    }
+    .portrait-menubar .full-label {
+      display: none;
+    }
+    .portrait-menubar .compact-label {
+      display: inline;
+    }
+    .portrait-brand {
+      font-size: 8px;
+      letter-spacing: 0.04em;
     }
     .portrait-tool {
       grid-template-columns: 1.25em 1fr;
@@ -712,6 +737,40 @@
     .portrait-help {
       display: none;
     }
+    body.artwork-shell .topbar {
+      padding: 4px;
+    }
+    body.artwork-shell .topbar .page-controls {
+      gap: 3px;
+      padding: 3px 5px;
+    }
+    body.artwork-shell .page-nav-btn {
+      width: 27px;
+      height: 25px;
+      padding: 0;
+    }
+    body.artwork-shell .page-select {
+      height: 25px;
+      padding-inline: 5px;
+      font-size: 10px;
+    }
+    .portrait-palette-dock {
+      height: 7.7%;
+      bottom: 4.9%;
+      gap: 1%;
+      padding: 0.5% 0.8%;
+    }
+    .portrait-palette {
+      gap: 2px;
+    }
+    .portrait-swatch {
+      border-width: 1px;
+    }
+    .portrait-statusbar {
+      bottom: 0.65%;
+      height: 3.1%;
+      font-size: 7px;
+    }
   }
 </style>
 </head>
@@ -719,9 +778,9 @@
 <div class="app">
   <header class="portrait-menubar" aria-label="Paint Lab menu">
     <span class="portrait-brand">PAINT LAB</span>
-    <button id="portraitSaveBtn" type="button">Save</button>
-    <button id="portraitScreenshotBtn" type="button">Screenshot</button>
-    <button id="portraitSettingsBtn" type="button">Settings</button>
+    <button id="portraitSaveBtn" type="button" aria-label="Save colored page"><span class="full-label">Save</span><span class="compact-label">💾</span></button>
+    <button id="portraitScreenshotBtn" type="button" aria-label="Take screenshot"><span class="full-label">Screenshot</span><span class="compact-label">📷</span></button>
+    <button id="portraitSettingsBtn" type="button" aria-label="Open settings"><span class="full-label">Settings</span><span class="compact-label">⚙</span></button>
   </header>
 
   <section id="portraitSettingsPanel" class="portrait-settings-panel hidden" aria-label="Drawing settings">

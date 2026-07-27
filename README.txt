@@ -58,6 +58,7 @@ Seasonal GUI themes
 - The active application shell uses the supplied portrait GUI artwork directly.
 - Core tools and the color palette remain visible while coloring; the former landscape/sidebar interface is retired.
 - The portrait Settings panel switches between eight supplied seasonal GUI graphics or automatic date selection.
+- Phone layouts top-align the artwork, use compact icon actions, and reduce navigation/palette spacing to avoid crowding.
 
 Coloring page navigation
 - The current B&W page is always shown in the page dropdown above the canvas.
