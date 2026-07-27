@@ -563,32 +563,70 @@
   }
   .portrait-gradient-setting {
     display: grid;
-    grid-template-columns: 1fr auto auto auto;
-    align-items: center;
-    gap: 0.55em;
+    gap: 0.5em;
+    padding: 0.7em;
+    border: 2px solid color-mix(in srgb, var(--accent) 76%, white);
+    border-radius: 10px;
+    background: rgba(8, 8, 16, 0.82);
+    box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 42%, transparent);
   }
   .portrait-gradient-setting strong {
     font-weight: 700;
+    color: #fff5b8;
+    letter-spacing: 0.04em;
+  }
+  .portrait-gradient-preview {
+    height: 1.15em;
+    border: 1px solid rgba(255, 255, 255, 0.78);
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--gradient-start, #4da3ff), var(--gradient-end, #ff3b30));
+    box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.65);
+  }
+  .portrait-gradient-endpoints {
+    display: grid;
+    grid-template-columns: 1fr 1.25fr 1fr;
+    align-items: end;
+    gap: 0.55em;
+  }
+  .portrait-gradient-setting .portrait-gradient-color {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.2em;
+    color: #fff;
+    text-align: center;
+    font-size: 0.85em;
   }
   .portrait-gradient-setting input[type="color"] {
     grid-column: auto;
-    width: 3.25em;
-    height: 2.35em;
+    width: 100%;
+    height: 2.75em;
     padding: 0.12em;
-    border: 1px solid rgba(255, 229, 158, 0.75);
+    border: 2px solid rgba(255, 239, 188, 0.92);
     border-radius: 7px;
     background: rgba(255, 255, 255, 0.12);
     cursor: pointer;
   }
   .portrait-gradient-setting button {
-    min-width: 2.6em;
-    height: 2.35em;
-    border: 1px solid rgba(255, 220, 133, 0.62);
-    border-radius: 7px;
-    color: #fff;
-    background: color-mix(in srgb, var(--button) 88%, #111);
+    min-width: 4.8em;
+    min-height: 3.05em;
+    border: 2px solid #fff1a0;
+    border-radius: 9px;
+    color: #27110c;
+    background: linear-gradient(180deg, #fff2a8, var(--accent));
     font: inherit;
+    font-weight: 900;
+    text-shadow: 0 1px rgba(255, 255, 255, 0.45);
+    box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 60%, transparent);
     cursor: pointer;
+  }
+  .portrait-gradient-setting button:active {
+    transform: scale(0.96);
+  }
+  .portrait-gradient-setting.swapped {
+    animation: gradient-swap-flash 360ms ease-out;
+  }
+  @keyframes gradient-swap-flash {
+    50% { box-shadow: 0 0 22px #fff5a8; }
   }
   .portrait-zoom-actions {
     display: grid;
@@ -861,11 +899,18 @@
         <option value="newyear">New Year</option>
       </select>
     </label>
-    <div class="portrait-gradient-setting" aria-label="Gradient colors">
+    <div id="portraitGradientSetting" class="portrait-gradient-setting" aria-label="Gradient colors">
       <strong>Gradient colors</strong>
-      <input id="portraitGradientStartColor" type="color" value="#4da3ff" aria-label="Gradient start color">
-      <button id="portraitGradientSwapBtn" type="button" aria-label="Swap gradient colors" title="Swap gradient colors">⇄</button>
-      <input id="portraitGradientEndColor" type="color" value="#ff3b30" aria-label="Gradient end color">
+      <div id="portraitGradientPreview" class="portrait-gradient-preview" aria-hidden="true"></div>
+      <div class="portrait-gradient-endpoints">
+        <label class="portrait-gradient-color">START
+          <input id="portraitGradientStartColor" type="color" value="#4da3ff" aria-label="Gradient start color">
+        </label>
+        <button id="portraitGradientSwapBtn" type="button" aria-label="Swap gradient colors" title="Swap gradient colors">SWAP ⇄</button>
+        <label class="portrait-gradient-color">END
+          <input id="portraitGradientEndColor" type="color" value="#ff3b30" aria-label="Gradient end color">
+        </label>
+      </div>
     </div>
     <label>Canvas zoom <output id="portraitZoomLabel">100%</output>
       <input id="portraitZoomRange" type="range" min="20" max="400" step="5" value="100">
@@ -1157,6 +1202,8 @@
   const portraitLineRange = document.getElementById('portraitLineRange');
   const portraitLineLabel = document.getElementById('portraitLineLabel');
   const portraitThemeSelect = document.getElementById('portraitThemeSelect');
+  const portraitGradientSetting = document.getElementById('portraitGradientSetting');
+  const portraitGradientPreview = document.getElementById('portraitGradientPreview');
   const portraitGradientStartColor = document.getElementById('portraitGradientStartColor');
   const portraitGradientEndColor = document.getElementById('portraitGradientEndColor');
   const portraitGradientSwapBtn = document.getElementById('portraitGradientSwapBtn');
@@ -1352,6 +1399,33 @@
       parseInt(clean.slice(2, 4), 16),
       parseInt(clean.slice(4, 6), 16)
     ];
+  }
+
+  function updateGradientControls(flash = false) {
+    const startHex = toHex(gradientStartColor);
+    const endHex = toHex(gradientEndColor);
+    gradientStartColorInput.value = startHex;
+    gradientEndColorInput.value = endHex;
+    if (portraitGradientStartColor) portraitGradientStartColor.value = startHex;
+    if (portraitGradientEndColor) portraitGradientEndColor.value = endHex;
+    if (portraitGradientPreview) {
+      portraitGradientPreview.style.setProperty('--gradient-start', startHex);
+      portraitGradientPreview.style.setProperty('--gradient-end', endHex);
+    }
+    if (flash && portraitGradientSetting) {
+      portraitGradientSetting.classList.remove('swapped');
+      void portraitGradientSetting.offsetWidth;
+      portraitGradientSetting.classList.add('swapped');
+      window.setTimeout(() => portraitGradientSetting.classList.remove('swapped'), 400);
+    }
+  }
+
+  function setGradientColors(startColor, endColor, message, flash = false) {
+    gradientStartColor = [...startColor];
+    gradientEndColor = [...endColor];
+    updateGradientControls(flash);
+    setTool('gradient');
+    setStatus(message);
   }
 
   function setStatus(text) {
@@ -3282,36 +3356,28 @@
     });
   }
   if (portraitGradientStartColor) {
-    portraitGradientStartColor.addEventListener('input', (event) => {
+    const updateStartColor = (event) => {
       const parsed = parseHexColor(event.target.value);
       if (!parsed) return;
-      gradientStartColor = parsed;
-      gradientStartColorInput.value = event.target.value;
-      setTool('gradient');
-      setStatus('Gradient start color updated.');
-    });
+      setGradientColors(parsed, gradientEndColor, 'Gradient start color updated.');
+    };
+    portraitGradientStartColor.addEventListener('input', updateStartColor);
+    portraitGradientStartColor.addEventListener('change', updateStartColor);
   }
   if (portraitGradientEndColor) {
-    portraitGradientEndColor.addEventListener('input', (event) => {
+    const updateEndColor = (event) => {
       const parsed = parseHexColor(event.target.value);
       if (!parsed) return;
-      gradientEndColor = parsed;
-      gradientEndColorInput.value = event.target.value;
-      setTool('gradient');
-      setStatus('Gradient end color updated.');
-    });
+      setGradientColors(gradientStartColor, parsed, 'Gradient end color updated.');
+    };
+    portraitGradientEndColor.addEventListener('input', updateEndColor);
+    portraitGradientEndColor.addEventListener('change', updateEndColor);
   }
   if (portraitGradientSwapBtn) {
     portraitGradientSwapBtn.addEventListener('click', () => {
-      const previousStart = gradientStartColor;
-      gradientStartColor = gradientEndColor;
-      gradientEndColor = previousStart;
-      gradientStartColorInput.value = toHex(gradientStartColor);
-      gradientEndColorInput.value = toHex(gradientEndColor);
-      portraitGradientStartColor.value = gradientStartColorInput.value;
-      portraitGradientEndColor.value = gradientEndColorInput.value;
-      setTool('gradient');
-      setStatus('Gradient colors swapped.');
+      const visibleStart = parseHexColor(portraitGradientStartColor.value) || gradientStartColor;
+      const visibleEnd = parseHexColor(portraitGradientEndColor.value) || gradientEndColor;
+      setGradientColors(visibleEnd, visibleStart, 'Gradient colors swapped: START and END reversed.', true);
     });
   }
   if (portraitZoomRange) {
@@ -3362,14 +3428,14 @@
     const parsed = parseHexColor(e.target.value);
     if (!parsed) return;
     gradientStartColor = parsed;
-    if (portraitGradientStartColor) portraitGradientStartColor.value = e.target.value;
+    updateGradientControls();
   });
 
   gradientEndColorInput.addEventListener('input', (e) => {
     const parsed = parseHexColor(e.target.value);
     if (!parsed) return;
     gradientEndColor = parsed;
-    if (portraitGradientEndColor) portraitGradientEndColor.value = e.target.value;
+    updateGradientControls();
   });
 
   gradientShapeSelect.addEventListener('change', (e) => {
@@ -3973,10 +4039,7 @@
     lineThresholdLabel.textContent = lineThreshold;
     gradientAngleRange.value = String(gradientAngle);
     gradientAngleLabel.textContent = gradientAngle;
-    gradientStartColorInput.value = toHex(gradientStartColor);
-    gradientEndColorInput.value = toHex(gradientEndColor);
-    if (portraitGradientStartColor) portraitGradientStartColor.value = gradientStartColorInput.value;
-    if (portraitGradientEndColor) portraitGradientEndColor.value = gradientEndColorInput.value;
+    updateGradientControls();
     gradientShapeSelect.value = gradientShape;
     customColor.value = toHex(currentColor);
     convertUploadsToggle.checked = convertUploadsEnabled;
