@@ -39,6 +39,7 @@ Core tools
 - Custom color picker plus preset palette.
 - Fill controls: tolerance and line threshold.
 - Gradient controls: shape (Linear/Radial/Diamond), angle, and start/end colors.
+- The portrait Settings panel provides compact start/end gradient color wells plus a one-tap color swap.
 - Gradient is boundary-locked under line art and will not paint over outlines.
 - Converter controls: edge threshold, line thickness, and despeckle size.
 - Mouse, touch, and stylus drawing support.
@@ -61,6 +62,7 @@ Seasonal GUI themes
 - The selected preference is stored locally in the browser.
 - The active application shell uses the supplied portrait GUI artwork directly.
 - Core tools and the color palette remain visible while coloring; the former landscape/sidebar interface is retired.
+- The left tool rail is fully transparent so the seasonal GUI artwork remains unobstructed behind the tool buttons.
 - The portrait Settings panel switches between eight supplied seasonal GUI graphics or automatic date selection.
 - Phone layouts top-align the artwork, use compact icon actions, and reduce navigation/palette spacing to avoid crowding.
 
