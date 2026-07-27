@@ -322,10 +322,443 @@
     .topbar { left: 0; flex-wrap: wrap; }
     .canvas-viewport { padding-top: 76px; }
   }
+
+  /* Summer Nights artwork-shell prototype.
+     The proven coloring engine remains unchanged; this block remaps its visible shell
+     into the functional regions of GUI Themes/Summer Nights.png. */
+  body.artwork-shell {
+    min-height: 100vh;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 50% 30%, #432263 0, #180b2a 52%, #08040f 100%);
+  }
+  body.artwork-shell .app {
+    width: min(100vw, 1000px);
+    height: 100vh;
+    height: 100dvh;
+    margin: 0 auto;
+    display: block;
+    overflow: hidden;
+    border-inline: 2px solid rgba(255, 192, 91, 0.62);
+    box-shadow: 0 0 45px rgba(0, 0, 0, 0.82);
+  }
+  body.artwork-shell .app::before {
+    opacity: 1;
+    background-image: url("./GUI Themes/Summer Nights.png");
+    background-size: 100% 100%;
+    background-position: center;
+    filter: none;
+  }
+  body.artwork-shell .sidebar {
+    position: absolute;
+    z-index: 4;
+    left: 1.7%;
+    top: 7.7%;
+    bottom: 12.6%;
+    width: 18.3%;
+    min-width: 0;
+    max-height: none;
+    padding: 0.65%;
+    gap: 0.6rem;
+    border: 1px solid rgba(255, 202, 106, 0.62);
+    border-radius: 12px;
+    background: rgba(37, 16, 48, 0.82);
+    backdrop-filter: blur(7px);
+    box-shadow: inset 0 0 18px rgba(255, 151, 66, 0.22), 0 8px 18px rgba(0, 0, 0, 0.4);
+  }
+  body.artwork-shell .tool-dock,
+  body.artwork-shell .action-dock,
+  body.artwork-shell .panel {
+    border-color: rgba(255, 213, 125, 0.5);
+    background: rgba(48, 22, 57, 0.72);
+    box-shadow: none;
+  }
+  body.artwork-shell .tool-dock {
+    padding: 6px;
+    gap: 5px;
+  }
+  body.artwork-shell .tool-dock h1 {
+    color: #ffe795;
+  }
+  body.artwork-shell .btn,
+  body.artwork-shell .tab-btn {
+    background: linear-gradient(180deg, rgba(105, 55, 106, 0.95), rgba(58, 28, 67, 0.95));
+    border: 1px solid rgba(255, 211, 113, 0.34);
+    color: #fff2ad;
+  }
+  body.artwork-shell .btn.active,
+  body.artwork-shell .tab-btn.active {
+    color: #421d26;
+    background: linear-gradient(180deg, #fff3a7, #ffb846);
+    border-color: #fff2a3;
+  }
+  body.artwork-shell .canvas-wrap {
+    position: absolute;
+    z-index: 3;
+    left: 21.35%;
+    top: 7.72%;
+    right: 1.75%;
+    bottom: 31.1%;
+    min-width: 0;
+    overflow: hidden;
+    border: 3px solid rgba(81, 34, 66, 0.92);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.97);
+    box-shadow: 0 0 0 2px rgba(255, 203, 123, 0.5), 0 8px 24px rgba(0, 0, 0, 0.5);
+  }
+  body.artwork-shell .canvas-viewport {
+    padding: 54px 10px 28px;
+    background: rgba(255, 255, 255, 0.96);
+  }
+  body.artwork-shell .topbar {
+    background: linear-gradient(180deg, rgba(35, 14, 45, 0.94), rgba(53, 24, 63, 0.7), transparent);
+  }
+  body.artwork-shell .topbar > .pill:nth-child(2),
+  body.artwork-shell .topbar > .pill:nth-child(3),
+  body.artwork-shell .topbar > .pill:last-child {
+    display: none;
+  }
+  body.artwork-shell .topbar .page-controls {
+    flex: 1 1 auto;
+  }
+  body.artwork-shell .topbar .page-select {
+    width: min(320px, 42vw);
+  }
+  body.artwork-shell .pill {
+    color: #fff4b7;
+    background: rgba(67, 28, 75, 0.82);
+    border: 1px solid rgba(255, 214, 119, 0.38);
+  }
+  body.artwork-shell .page-nav-btn {
+    color: #401832;
+    background: linear-gradient(180deg, #fff1a1, #ffab42);
+  }
+  body.artwork-shell .footer {
+    color: #fff1ad;
+    background: linear-gradient(180deg, transparent, rgba(37, 12, 42, 0.86));
+  }
+  body.artwork-shell select,
+  body.artwork-shell input {
+    accent-color: #ffb743;
+  }
+  @media (max-width: 760px) {
+    body.artwork-shell {
+      overflow: auto;
+    }
+    body.artwork-shell .app {
+      width: 100vw;
+      min-height: 150vw;
+    }
+    body.artwork-shell .sidebar {
+      left: 1.5%;
+      top: 7.7%;
+      bottom: 12.5%;
+      width: 25%;
+    }
+    body.artwork-shell .canvas-wrap {
+      left: 27.7%;
+      top: 7.7%;
+      right: 1.8%;
+      bottom: 31%;
+    }
+    body.artwork-shell .tool-grid {
+      grid-template-columns: 1fr;
+    }
+    body.artwork-shell .tool-grid #tool-picker {
+      grid-column: auto;
+    }
+    body.artwork-shell .small {
+      font-size: 10px;
+    }
+  }
+
+  /* Portrait replacement shell: the legacy desktop sidebar is retained only as
+     an engine/control source and is never presented to the user. */
+  body.artwork-shell .app {
+    width: min(100vw, calc(100dvh * 0.58572));
+    max-width: 960px;
+    aspect-ratio: 960 / 1639;
+  }
+  body.artwork-shell .sidebar {
+    display: none;
+  }
+  .portrait-menubar {
+    position: absolute;
+    z-index: 8;
+    left: 2%;
+    right: 2%;
+    top: 3.05%;
+    height: 3.7%;
+    display: flex;
+    align-items: center;
+    gap: 1.2%;
+    padding: 0 1.8%;
+    color: #fff1a4;
+    font-size: clamp(10px, 1.25vh, 18px);
+    text-shadow: 0 1px 3px #000;
+  }
+  .portrait-brand {
+    margin-right: auto;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+  }
+  .portrait-menubar button {
+    border: 1px solid rgba(255, 220, 133, 0.5);
+    border-radius: 7px;
+    padding: 0.35em 0.8em;
+    color: #fff2ae;
+    background: rgba(58, 24, 70, 0.78);
+    cursor: pointer;
+  }
+  .portrait-settings-panel {
+    position: absolute;
+    z-index: 20;
+    top: 7.5%;
+    right: 2%;
+    width: 46%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8em;
+    padding: 1.4%;
+    border: 1px solid rgba(255, 220, 132, 0.72);
+    border-radius: 10px;
+    color: #fff2b0;
+    background: rgba(39, 14, 48, 0.96);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.65);
+    font-size: clamp(9px, 1.25vh, 16px);
+  }
+  .portrait-settings-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .portrait-settings-title button {
+    border: 0;
+    color: #fff2b0;
+    background: transparent;
+    font-size: 1.6em;
+    cursor: pointer;
+  }
+  .portrait-settings-panel label {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.25em 0.6em;
+  }
+  .portrait-settings-panel input {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+  .portrait-tool-rail {
+    position: absolute;
+    z-index: 7;
+    left: 1.85%;
+    top: 8.1%;
+    width: 17.2%;
+    bottom: 13.1%;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(3px, 0.45vh, 8px);
+    padding: 1.1% 0.7%;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    border: 1px solid rgba(255, 214, 121, 0.52);
+    border-radius: 10px;
+    background: rgba(42, 18, 52, 0.54);
+    backdrop-filter: blur(4px);
+  }
+  .portrait-tool {
+    flex: 0 0 auto;
+    min-height: clamp(30px, 4.15vh, 58px);
+    display: grid;
+    grid-template-columns: 1.7em 1fr;
+    align-items: center;
+    gap: 0.4em;
+    border: 1px solid rgba(255, 208, 112, 0.34);
+    border-radius: 8px;
+    padding: 0.35em 0.45em;
+    color: #fff0a8;
+    background: linear-gradient(180deg, rgba(93, 45, 96, 0.9), rgba(53, 25, 64, 0.92));
+    text-align: left;
+    font-size: clamp(9px, 1.25vh, 17px);
+    cursor: pointer;
+  }
+  .portrait-tool span {
+    font-size: 1.25em;
+    text-align: center;
+  }
+  .portrait-tool.active {
+    color: #4b1d26;
+    font-weight: 800;
+    background: linear-gradient(180deg, #fff5ae, #ffb947);
+    border-color: #fff0a0;
+    box-shadow: 0 0 9px rgba(255, 204, 83, 0.7);
+  }
+  .portrait-layer {
+    margin-top: auto;
+  }
+  body.artwork-shell .canvas-wrap {
+    left: 21.4%;
+    top: 7.75%;
+    right: 1.8%;
+    bottom: 31.15%;
+  }
+  body.artwork-shell .canvas-viewport {
+    padding: clamp(38px, 5vh, 64px) 6px 25px;
+  }
+  body.artwork-shell .topbar {
+    padding: 6px;
+  }
+  body.artwork-shell .topbar .zoom-controls {
+    display: none;
+  }
+  body.artwork-shell .page-nav-btn {
+    padding: 0 7px;
+  }
+  body.artwork-shell .page-select {
+    min-width: 0;
+    width: 100%;
+  }
+  .portrait-palette-dock {
+    position: absolute;
+    z-index: 9;
+    left: 2.1%;
+    right: 2%;
+    bottom: 5.35%;
+    height: 7.15%;
+    display: grid;
+    grid-template-columns: 12% 1fr;
+    align-items: center;
+    gap: 1.4%;
+    padding: 0.65% 1.1%;
+    border: 1px solid rgba(255, 213, 112, 0.55);
+    border-radius: 10px;
+    background: rgba(39, 15, 47, 0.7);
+    backdrop-filter: blur(5px);
+  }
+  .portrait-current-colors {
+    height: 78%;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(255, 224, 145, 0.55);
+    border-radius: 7px;
+    background: rgba(16, 7, 20, 0.78);
+  }
+  .portrait-current-color {
+    width: 70%;
+    aspect-ratio: 1;
+    max-height: 80%;
+    border: 3px solid #fff;
+    border-radius: 6px;
+    background: #808080;
+    box-shadow: 5px 5px 0 #111;
+  }
+  .portrait-palette {
+    display: grid;
+    grid-template-columns: repeat(9, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    gap: clamp(2px, 0.35vh, 6px);
+    height: 86%;
+  }
+  .portrait-swatch {
+    min-width: 0;
+    border: 2px solid rgba(255, 235, 174, 0.72);
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.52);
+  }
+  .portrait-swatch.active {
+    outline: 3px solid #fff3a3;
+    outline-offset: 1px;
+    transform: translateY(-1px);
+  }
+  .portrait-statusbar {
+    position: absolute;
+    z-index: 8;
+    left: 2.2%;
+    right: 2%;
+    bottom: 1.05%;
+    height: 2.75%;
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    padding: 0 1.6%;
+    color: #fff0a1;
+    font-size: clamp(8px, 1.05vh, 15px);
+    text-shadow: 0 1px 2px #000;
+  }
+  .portrait-help {
+    margin-left: auto;
+    opacity: 0.9;
+  }
+  @media (max-width: 540px) {
+    .portrait-menubar {
+      font-size: 9px;
+    }
+    .portrait-menubar button {
+      padding-inline: 0.45em;
+    }
+    .portrait-tool {
+      grid-template-columns: 1.25em 1fr;
+      padding-inline: 0.25em;
+      font-size: 8px;
+    }
+    .portrait-tool span {
+      font-size: 1em;
+    }
+    .portrait-help {
+      display: none;
+    }
+  }
 </style>
 </head>
-<body>
+<body class="artwork-shell" data-theme="summer">
 <div class="app">
+  <header class="portrait-menubar" aria-label="Paint Lab menu">
+    <span class="portrait-brand">PAINT LAB</span>
+    <button id="portraitSaveBtn" type="button">Save</button>
+    <button id="portraitScreenshotBtn" type="button">Screenshot</button>
+    <button id="portraitSettingsBtn" type="button">Settings</button>
+  </header>
+
+  <section id="portraitSettingsPanel" class="portrait-settings-panel hidden" aria-label="Drawing settings">
+    <div class="portrait-settings-title">
+      <strong>Drawing Settings</strong>
+      <button id="portraitSettingsCloseBtn" type="button" aria-label="Close settings">×</button>
+    </div>
+    <label>Brush size <output id="portraitBrushLabel">10</output>
+      <input id="portraitBrushRange" type="range" min="1" max="200" value="10">
+    </label>
+    <label>Fill tolerance <output id="portraitFillLabel">18</output>
+      <input id="portraitFillRange" type="range" min="0" max="120" value="18">
+    </label>
+    <label>Line threshold <output id="portraitLineLabel">165</output>
+      <input id="portraitLineRange" type="range" min="0" max="255" value="165">
+    </label>
+  </section>
+
+  <nav class="portrait-tool-rail" aria-label="Painting tools">
+    <button class="portrait-tool active" data-portrait-tool="brush" data-brush-size="3" type="button"><span>✏️</span>Pencil</button>
+    <button class="portrait-tool" data-portrait-tool="brush" data-brush-size="10" type="button"><span>🖌️</span>Brush</button>
+    <button class="portrait-tool" data-portrait-tool="brush" data-brush-size="24" type="button"><span>🖍️</span>Marker</button>
+    <button class="portrait-tool" data-portrait-tool="fill" type="button"><span>🪣</span>Fill</button>
+    <button class="portrait-tool" data-portrait-tool="gradient" type="button"><span>🌈</span>Gradient</button>
+    <button class="portrait-tool" data-portrait-tool="eraser" type="button"><span>◻️</span>Eraser</button>
+    <button class="portrait-tool" data-portrait-tool="picker" type="button"><span>💧</span>Picker</button>
+    <button id="portraitPaintLayerBtn" class="portrait-tool portrait-layer" type="button"><span>▱</span>Under Lines</button>
+  </nav>
+
+  <section class="portrait-palette-dock" aria-label="Always visible color palette">
+    <div class="portrait-current-colors" aria-label="Current color">
+      <span id="portraitCurrentColor" class="portrait-current-color"></span>
+    </div>
+    <div id="portraitPalette" class="portrait-palette"></div>
+  </section>
+
+  <footer class="portrait-statusbar">
+    <span id="portraitStatus">Ready to color.</span>
+    <span class="portrait-help">Choose a color, then draw inside the lines.</span>
+  </footer>
+
   <aside class="sidebar">
     <div class="tool-dock">
       <h1>Tools</h1>
@@ -568,6 +1001,22 @@
   const downloadBtn = document.getElementById('downloadBtn');
   const themeSelect = document.getElementById('themeSelect');
   const themeStatus = document.getElementById('themeStatus');
+  const portraitPalette = document.getElementById('portraitPalette');
+  const portraitCurrentColor = document.getElementById('portraitCurrentColor');
+  const portraitStatus = document.getElementById('portraitStatus');
+  const portraitSaveBtn = document.getElementById('portraitSaveBtn');
+  const portraitScreenshotBtn = document.getElementById('portraitScreenshotBtn');
+  const portraitSettingsBtn = document.getElementById('portraitSettingsBtn');
+  const portraitSettingsPanel = document.getElementById('portraitSettingsPanel');
+  const portraitSettingsCloseBtn = document.getElementById('portraitSettingsCloseBtn');
+  const portraitBrushRange = document.getElementById('portraitBrushRange');
+  const portraitBrushLabel = document.getElementById('portraitBrushLabel');
+  const portraitFillRange = document.getElementById('portraitFillRange');
+  const portraitFillLabel = document.getElementById('portraitFillLabel');
+  const portraitLineRange = document.getElementById('portraitLineRange');
+  const portraitLineLabel = document.getElementById('portraitLineLabel');
+  const portraitPaintLayerBtn = document.getElementById('portraitPaintLayerBtn');
+  const portraitToolBtns = [...document.querySelectorAll('[data-portrait-tool]')];
   const tabBtns = [...document.querySelectorAll('.tab-btn')];
   const sidebarPanes = {
     draw: document.getElementById('paneDraw'),
@@ -743,6 +1192,7 @@
 
   function setStatus(text) {
     statusEl.textContent = text || '';
+    if (portraitStatus) portraitStatus.textContent = text || 'Ready to color.';
   }
 
   window.addEventListener('error', (event) => {
@@ -1075,6 +1525,39 @@
     currentColor = [nextColor[0], nextColor[1], nextColor[2]];
     customColor.value = toHex(currentColor);
     updatePaletteActive();
+    updatePortraitPaletteActive();
+  }
+
+  function buildPortraitPalette() {
+    if (!portraitPalette) return;
+    portraitPalette.innerHTML = '';
+    PALETTE.forEach((color) => {
+      const swatch = document.createElement('button');
+      swatch.type = 'button';
+      swatch.className = 'portrait-swatch';
+      swatch.style.background = toHex(color);
+      swatch.setAttribute('aria-label', `Choose ${toHex(color)}`);
+      swatch.addEventListener('click', () => {
+        setColor(color);
+        if (currentTool === 'picker') setTool('brush');
+        setStatus(`Color selected: ${toHex(color)}.`);
+      });
+      portraitPalette.appendChild(swatch);
+    });
+    updatePortraitPaletteActive();
+  }
+
+  function updatePortraitPaletteActive() {
+    if (portraitCurrentColor) portraitCurrentColor.style.background = toHex(currentColor);
+    if (!portraitPalette) return;
+    [...portraitPalette.children].forEach((element, index) => {
+      const color = PALETTE[index];
+      const active = color
+        && color[0] === currentColor[0]
+        && color[1] === currentColor[1]
+        && color[2] === currentColor[2];
+      element.classList.toggle('active', active);
+    });
   }
 
   function buildPalette() {
@@ -1110,6 +1593,12 @@
       if (paintTarget !== 'under') setPaintTarget('under', true);
       setStatus('Gradient active: tap an enclosed area to fill under the line art.');
     }
+    portraitToolBtns.forEach((button) => {
+      const sameTool = button.dataset.portraitTool === t;
+      const size = parseInt(button.dataset.brushSize || '', 10);
+      const sameBrushSize = t !== 'brush' || !Number.isFinite(size) || size === brushRadius;
+      button.classList.toggle('active', sameTool && sameBrushSize);
+    });
   }
 
   function setPaintTarget(nextTarget, silent = false) {
@@ -1117,6 +1606,10 @@
     const isOverlay = paintTarget === 'overlay';
     paintTargetBtn.classList.toggle('active', isOverlay);
     paintTargetBtn.textContent = isOverlay ? 'Paint Layer: Over Image' : 'Paint Layer: Under Lines';
+    if (portraitPaintLayerBtn) {
+      portraitPaintLayerBtn.classList.toggle('active', isOverlay);
+      portraitPaintLayerBtn.lastChild.textContent = isOverlay ? 'Over Image' : 'Under Lines';
+    }
     if (!silent) {
       setStatus(isOverlay ? 'Paint mode: drawing over image.' : 'Paint mode: coloring under line art.');
     }
@@ -2541,6 +3034,63 @@
   toolBtns.gradient.addEventListener('click', () => setTool('gradient'));
   toolBtns.eraser.addEventListener('click', () => setTool('eraser'));
   toolBtns.picker.addEventListener('click', () => setTool('picker'));
+  portraitToolBtns.forEach((button) => {
+    button.addEventListener('click', () => {
+      const tool = button.dataset.portraitTool || 'brush';
+      const presetSize = parseInt(button.dataset.brushSize || '', 10);
+      if (tool === 'brush' && Number.isFinite(presetSize)) {
+        brushRadius = presetSize;
+        brushRange.value = String(brushRadius);
+        brushLabel.textContent = String(brushRadius);
+        if (portraitBrushRange) portraitBrushRange.value = String(brushRadius);
+        if (portraitBrushLabel) portraitBrushLabel.textContent = String(brushRadius);
+      }
+      setTool(tool);
+      setStatus(`${button.textContent.trim()} selected.`);
+    });
+  });
+  if (portraitPaintLayerBtn) {
+    portraitPaintLayerBtn.addEventListener('click', () => {
+      setPaintTarget(paintTarget === 'overlay' ? 'under' : 'overlay');
+    });
+  }
+  if (portraitSaveBtn) portraitSaveBtn.addEventListener('click', downloadComposite);
+  if (portraitScreenshotBtn) portraitScreenshotBtn.addEventListener('click', screenshotComposite);
+  if (portraitSettingsBtn && portraitSettingsPanel) {
+    portraitSettingsBtn.addEventListener('click', () => portraitSettingsPanel.classList.toggle('hidden'));
+  }
+  if (portraitSettingsCloseBtn && portraitSettingsPanel) {
+    portraitSettingsCloseBtn.addEventListener('click', () => portraitSettingsPanel.classList.add('hidden'));
+  }
+  if (portraitBrushRange) {
+    portraitBrushRange.addEventListener('input', (event) => {
+      brushRadius = parseInt(event.target.value, 10);
+      brushRange.value = String(brushRadius);
+      brushLabel.textContent = String(brushRadius);
+      portraitBrushLabel.textContent = String(brushRadius);
+      setTool('brush');
+    });
+  }
+  if (portraitFillRange) {
+    portraitFillRange.addEventListener('input', (event) => {
+      fillTolerance = parseInt(event.target.value, 10);
+      fillToleranceRange.value = String(fillTolerance);
+      fillToleranceLabel.textContent = String(fillTolerance);
+      portraitFillLabel.textContent = String(fillTolerance);
+    });
+  }
+  if (portraitLineRange) {
+    portraitLineRange.addEventListener('input', (event) => {
+      lineThreshold = parseInt(event.target.value, 10);
+      lineThresholdRange.value = String(lineThreshold);
+      lineThresholdLabel.textContent = String(lineThreshold);
+      portraitLineLabel.textContent = String(lineThreshold);
+      if (images.length) {
+        drawLineArtForCurrentImage();
+        drawComposite();
+      }
+    });
+  }
   paintTargetBtn.addEventListener('click', () => {
     setPaintTarget(paintTarget === 'overlay' ? 'under' : 'overlay');
   });
@@ -3071,6 +3621,7 @@
   (async function init() {
     initializeSeasonalTheme();
     buildPalette();
+    buildPortraitPalette();
     setTool('brush');
     setPaintTarget('under', true);
 

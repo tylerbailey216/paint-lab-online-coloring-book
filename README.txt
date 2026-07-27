@@ -55,6 +55,8 @@ Seasonal GUI themes
 - Each automatic theme uses its matching design from `GUI Themes` as a responsive decorative backdrop.
 - Users can preview or keep a specific GUI from the Seasonal GUI selector.
 - The selected preference is stored locally in the browser.
+- The active application shell uses the supplied portrait GUI artwork directly.
+- Core tools and the color palette remain visible while coloring; the former landscape/sidebar interface is retired.
 
 Coloring page navigation
 - The current B&W page is always shown in the page dropdown above the canvas.
