@@ -329,6 +329,8 @@
   body.artwork-shell {
     min-height: 100vh;
     overflow: hidden;
+    display: grid;
+    place-items: center;
     background:
       radial-gradient(circle at 50% 30%, #432263 0, #180b2a 52%, #08040f 100%);
   }
@@ -344,7 +346,7 @@
   }
   body.artwork-shell .app::before {
     opacity: 1;
-    background-image: url("./GUI Themes/Summer Nights.png");
+    background-image: var(--theme-art, url("./GUI Themes/Summer Nights.png"));
     background-size: 100% 100%;
     background-position: center;
     filter: none;
@@ -476,6 +478,8 @@
      an engine/control source and is never presented to the user. */
   body.artwork-shell .app {
     width: min(100vw, calc(100dvh * 0.58572));
+    height: min(100dvh, 170.73vw);
+    min-height: 0;
     max-width: 960px;
     aspect-ratio: 960 / 1639;
   }
@@ -506,8 +510,8 @@
     border: 1px solid rgba(255, 220, 133, 0.5);
     border-radius: 7px;
     padding: 0.35em 0.8em;
-    color: #fff2ae;
-    background: rgba(58, 24, 70, 0.78);
+    color: #fff;
+    background: color-mix(in srgb, var(--button) 84%, transparent);
     cursor: pointer;
   }
   .portrait-settings-panel {
@@ -522,8 +526,8 @@
     padding: 1.4%;
     border: 1px solid rgba(255, 220, 132, 0.72);
     border-radius: 10px;
-    color: #fff2b0;
-    background: rgba(39, 14, 48, 0.96);
+    color: var(--text);
+    background: color-mix(in srgb, var(--panel) 96%, #111);
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.65);
     font-size: clamp(9px, 1.25vh, 16px);
   }
@@ -563,7 +567,7 @@
     scrollbar-width: thin;
     border: 1px solid rgba(255, 214, 121, 0.52);
     border-radius: 10px;
-    background: rgba(42, 18, 52, 0.54);
+    background: color-mix(in srgb, var(--panel) 58%, transparent);
     backdrop-filter: blur(4px);
   }
   .portrait-tool {
@@ -576,8 +580,8 @@
     border: 1px solid rgba(255, 208, 112, 0.34);
     border-radius: 8px;
     padding: 0.35em 0.45em;
-    color: #fff0a8;
-    background: linear-gradient(180deg, rgba(93, 45, 96, 0.9), rgba(53, 25, 64, 0.92));
+    color: var(--text);
+    background: linear-gradient(180deg, color-mix(in srgb, var(--button) 90%, white 10%), color-mix(in srgb, var(--button) 90%, black 10%));
     text-align: left;
     font-size: clamp(9px, 1.25vh, 17px);
     cursor: pointer;
@@ -587,9 +591,9 @@
     text-align: center;
   }
   .portrait-tool.active {
-    color: #4b1d26;
+    color: #20131a;
     font-weight: 800;
-    background: linear-gradient(180deg, #fff5ae, #ffb947);
+    background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 52%, white), var(--accent));
     border-color: #fff0a0;
     box-shadow: 0 0 9px rgba(255, 204, 83, 0.7);
   }
@@ -632,7 +636,7 @@
     padding: 0.65% 1.1%;
     border: 1px solid rgba(255, 213, 112, 0.55);
     border-radius: 10px;
-    background: rgba(39, 15, 47, 0.7);
+    background: color-mix(in srgb, var(--panel) 74%, transparent);
     backdrop-filter: blur(5px);
   }
   .portrait-current-colors {
@@ -733,6 +737,19 @@
     </label>
     <label>Line threshold <output id="portraitLineLabel">165</output>
       <input id="portraitLineRange" type="range" min="0" max="255" value="165">
+    </label>
+    <label>Seasonal GUI
+      <select id="portraitThemeSelect">
+        <option value="auto">Automatic by date</option>
+        <option value="spring">Spring Time</option>
+        <option value="summer">Summer Nights</option>
+        <option value="autumn">Autumn Vibes</option>
+        <option value="winter">Winter Wonderland</option>
+        <option value="love">Love</option>
+        <option value="lucky">Lucky</option>
+        <option value="halloween">Spooky Halloween</option>
+        <option value="newyear">New Year</option>
+      </select>
     </label>
   </section>
 
@@ -1015,6 +1032,7 @@
   const portraitFillLabel = document.getElementById('portraitFillLabel');
   const portraitLineRange = document.getElementById('portraitLineRange');
   const portraitLineLabel = document.getElementById('portraitLineLabel');
+  const portraitThemeSelect = document.getElementById('portraitThemeSelect');
   const portraitPaintLayerBtn = document.getElementById('portraitPaintLayerBtn');
   const portraitToolBtns = [...document.querySelectorAll('[data-portrait-tool]')];
   const tabBtns = [...document.querySelectorAll('.tab-btn')];
@@ -1127,6 +1145,7 @@
     const activeTheme = safePreference === 'auto' ? automaticThemeForDate() : safePreference;
     document.body.dataset.theme = activeTheme;
     if (themeSelect) themeSelect.value = safePreference;
+    if (portraitThemeSelect) portraitThemeSelect.value = safePreference;
     if (themeStatus) {
       const prefix = safePreference === 'auto' ? 'Auto: ' : 'Theme: ';
       themeStatus.textContent = `${prefix}${THEME_NAMES[activeTheme]}`;
@@ -3089,6 +3108,12 @@
         drawLineArtForCurrentImage();
         drawComposite();
       }
+    });
+  }
+  if (portraitThemeSelect) {
+    portraitThemeSelect.addEventListener('change', (event) => {
+      applyThemePreference(event.target.value);
+      setStatus(`Seasonal GUI changed to ${THEME_NAMES[document.body.dataset.theme] || 'selected theme'}.`);
     });
   }
   paintTargetBtn.addEventListener('click', () => {
