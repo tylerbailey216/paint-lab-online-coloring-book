@@ -1,0 +1,13 @@
+Drop your approved seasonal image files into this folder.
+
+Supported file types:
+- .png
+- .jpg
+- .jpeg
+- .webp
+- .gif
+
+After updating this folder, run:
+- Update Season Library.cmd
+
+That script rebuilds season-library.js in filename order for both local use and GitHub Pages.

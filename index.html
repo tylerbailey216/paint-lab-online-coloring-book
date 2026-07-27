@@ -5,20 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Paint Lab Coloring App</title>
 <meta name="description" content="Interactive coloring app with brush, fill, gradient, screenshot export, and transparent line-art conversion." />
-<link rel="canonical" href="https://tylerbailey216.github.io/legendary-invention/" />
+<link rel="canonical" href="https://tylerbailey216.github.io/paint-lab-online-coloring-book/" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Paint Lab Coloring App" />
 <meta property="og:title" content="Paint Lab Coloring App" />
 <meta property="og:description" content="Color online with smart fill, gradients, screenshots, and transparent line-art conversion." />
-<meta property="og:url" content="https://tylerbailey216.github.io/legendary-invention/" />
-<meta property="og:image" content="https://tylerbailey216.github.io/legendary-invention/social-preview.png" />
+<meta property="og:url" content="https://tylerbailey216.github.io/paint-lab-online-coloring-book/" />
+<meta property="og:image" content="https://tylerbailey216.github.io/paint-lab-online-coloring-book/social-preview.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="og:image:alt" content="Paint Lab Coloring App preview" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Paint Lab Coloring App" />
 <meta name="twitter:description" content="Interactive coloring app with fill, gradient, screenshot, and line-art conversion." />
-<meta name="twitter:image" content="https://tylerbailey216.github.io/legendary-invention/social-preview.png" />
+<meta name="twitter:image" content="https://tylerbailey216.github.io/paint-lab-online-coloring-book/social-preview.png" />
   <link rel="icon" type="image/png" sizes="512x512" href="./paint-lab-tab-icon.png?v=20260408">
   <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico?v=20260408">
   <link rel="apple-touch-icon" href="./paint-lab-tab-icon.png?v=20260408">
@@ -31,7 +31,20 @@
     --muted: #9a9a9a;
     --accent: #4da3ff;
     --topbar-space: 58px;
+    --panel-raised: #383838;
+    --button: #474747;
+    --button-active: #6a6a6a;
+    --workspace: #323232;
+    --border: rgba(255, 255, 255, 0.12);
   }
+  body[data-theme="spring"] { --bg:#17372f; --panel:#245044; --panel-raised:#306b59; --button:#397b66; --button-active:#e48eb1; --workspace:#d9f0e1; --accent:#ff9fc4; --text:#fff8fb; --muted:#c7e5d8; --border:rgba(255,224,237,.25); }
+  body[data-theme="summer"] { --bg:#073b4c; --panel:#0b6172; --panel-raised:#0f7f8d; --button:#118f9d; --button-active:#ffb703; --workspace:#bdebf2; --accent:#ffd166; --text:#fffdf2; --muted:#c8edf0; --border:rgba(255,240,180,.28); }
+  body[data-theme="autumn"] { --bg:#351a12; --panel:#5b2b1c; --panel-raised:#743a23; --button:#884924; --button-active:#d88924; --workspace:#d9b78f; --accent:#f2a93b; --text:#fff6e8; --muted:#e9c9a6; --border:rgba(255,210,139,.26); }
+  body[data-theme="winter"] { --bg:#10263f; --panel:#173b61; --panel-raised:#235580; --button:#2d6c9d; --button-active:#79bde8; --workspace:#dceef9; --accent:#9ddcff; --text:#f5fbff; --muted:#c1dced; --border:rgba(210,239,255,.28); }
+  body[data-theme="love"] { --bg:#3e1324; --panel:#681d3a; --panel-raised:#85264a; --button:#a6305d; --button-active:#ef719a; --workspace:#f7d9e3; --accent:#ff8bb1; --text:#fff7fa; --muted:#f2c6d5; --border:rgba(255,210,226,.3); }
+  body[data-theme="lucky"] { --bg:#102d20; --panel:#185037; --panel-raised:#216b49; --button:#278257; --button-active:#d0a928; --workspace:#dbead8; --accent:#f0cf45; --text:#fffceb; --muted:#c9e2d1; --border:rgba(242,218,112,.28); }
+  body[data-theme="halloween"] { --bg:#1c1228; --panel:#332044; --panel-raised:#4b2a5c; --button:#633375; --button-active:#df6a22; --workspace:#c8adc9; --accent:#ff8426; --text:#fff7ec; --muted:#d9c2df; --border:rgba(255,157,67,.3); }
+  body[data-theme="newyear"] { --bg:#0b1424; --panel:#17243a; --panel-raised:#25344d; --button:#344765; --button-active:#b99a48; --workspace:#d9d4c5; --accent:#e8c86b; --text:#fffdf3; --muted:#d8d1b9; --border:rgba(240,213,128,.3); }
   * { box-sizing: border-box; }
   html, body { height: 100%; margin: 0; background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif; }
   .app { display: grid; grid-template-columns: var(--ui) 1fr; height: 100vh; height: 100dvh; overflow: hidden; }
@@ -41,7 +54,7 @@
     display: grid;
     grid-template-rows: auto auto minmax(0, 1fr) auto;
     gap: 10px;
-    border-right: 1px solid #000;
+    border-right: 1px solid var(--border);
     overflow: hidden;
     min-height: 0;
   }
@@ -54,14 +67,14 @@
     border: 0;
     border-radius: 8px;
     padding: 7px 8px;
-    background: #414141;
+    background: var(--button);
     color: #ddd;
     cursor: pointer;
     font-size: 12px;
     font-weight: 600;
   }
   .tab-btn.active {
-    background: #636363;
+    background: var(--button-active);
     color: #fff;
   }
   .sidebar-panels {
@@ -111,8 +124,8 @@
     gap: 8px;
     padding: 8px;
     border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: linear-gradient(180deg, rgba(56, 56, 56, 0.96), rgba(41, 41, 41, 0.96));
+    border: 1px solid var(--border);
+    background: linear-gradient(180deg, var(--panel-raised), var(--panel));
     box-shadow: 0 8px 18px rgba(0, 0, 0, 0.22);
   }
   .tool-grid {
@@ -122,7 +135,7 @@
   }
   .tool-grid #tool-picker { grid-column: 1 / -1; }
   .panel {
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: 1px solid var(--border);
     border-radius: 10px;
     padding: 9px;
     display: flex;
@@ -140,13 +153,13 @@
     gap: 8px;
     padding: 8px;
     border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    background: linear-gradient(0deg, rgba(56, 56, 56, 0.98), rgba(42, 42, 42, 0.95));
+    border: 1px solid var(--border);
+    background: linear-gradient(0deg, var(--panel-raised), var(--panel));
     box-shadow: 0 -8px 18px rgba(0, 0, 0, 0.22);
   }
   h1 { font-size: 16px; margin: 4px 0 2px; color: #f0f0f0; }
-  .btn { width: 100%; border: 0; border-radius: 8px; padding: 8px 10px; background: #474747; color: #fff; cursor: pointer; text-align: left; }
-  .btn.active { background: #6a6a6a; }
+  .btn { width: 100%; border: 0; border-radius: 8px; padding: 8px 10px; background: var(--button); color: #fff; cursor: pointer; text-align: left; }
+  .btn.active { background: var(--button-active); }
   .btn[disabled] { opacity: 0.45; cursor: not-allowed; }
   .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
@@ -161,7 +174,7 @@
   .images .thumb { display: flex; align-items: center; gap: 8px; padding: 4px; border-radius: 6px; cursor: pointer; }
   .images .thumb.active { background: rgba(255,255,255,0.08); }
   .images .thumb img { width: 28px; height: 28px; object-fit: cover; border-radius: 4px; background: #fff; }
-  .canvas-wrap { position: relative; background: #323232; min-width: 0; overflow: hidden; }
+  .canvas-wrap { position: relative; background: var(--workspace); min-width: 0; overflow: hidden; }
   .canvas-viewport {
     position: absolute;
     inset: 0;
@@ -181,7 +194,7 @@
     max-width: none;
     max-height: none;
     margin: 0 auto;
-    background: #323232;
+    background: var(--workspace);
     touch-action: none;
     cursor: crosshair;
   }
@@ -384,6 +397,19 @@
     </div>
 
     <div class="action-dock">
+      <label class="small" for="themeSelect">Seasonal GUI</label>
+      <select id="themeSelect" aria-label="Seasonal GUI theme">
+        <option value="auto">Automatic by date</option>
+        <option value="spring">Spring Time</option>
+        <option value="summer">Summer Nights</option>
+        <option value="autumn">Autumn Vibes</option>
+        <option value="winter">Winter Wonderland</option>
+        <option value="love">Love</option>
+        <option value="lucky">Lucky</option>
+        <option value="halloween">Spooky Halloween</option>
+        <option value="newyear">New Year</option>
+      </select>
+      <div id="themeStatus" class="small"></div>
       <button id="screenshotBtn" class="btn">Screenshot</button>
       <button id="downloadBtn" class="btn">Download (Ctrl/Cmd+S)</button>
       <div id="status" class="small status"></div>
@@ -419,6 +445,17 @@
   const FILL_EDGE_BLEED_PASSES = 2;
   const MAX_HISTORY = 12;
   const MAX_IMAGE_SAVES = 8;
+  const THEME_STORAGE_KEY = 'paintLabThemePreference';
+  const THEME_NAMES = {
+    spring: 'Spring Time',
+    summer: 'Summer Nights',
+    autumn: 'Autumn Vibes',
+    winter: 'Winter Wonderland',
+    love: 'Love',
+    lucky: 'Lucky',
+    halloween: 'Spooky Halloween',
+    newyear: 'New Year'
+  };
   const MAX_IMAGE_DIMENSION = window.matchMedia('(max-width: 900px)').matches ? 1400 : 1800;
   const IMAGE_SOURCE_MODE = 'curated'; // 'curated' or 'userUpload'
   const ALLOW_USER_UPLOADS = IMAGE_SOURCE_MODE === 'userUpload';
@@ -484,6 +521,8 @@
   const zoomFitBtn = document.getElementById('zoomFitBtn');
   const zoomValueLabel = document.getElementById('zoomValueLabel');
   const downloadBtn = document.getElementById('downloadBtn');
+  const themeSelect = document.getElementById('themeSelect');
+  const themeStatus = document.getElementById('themeStatus');
   const tabBtns = [...document.querySelectorAll('.tab-btn')];
   const sidebarPanes = {
     draw: document.getElementById('paneDraw'),
@@ -523,6 +562,7 @@
   let activePointerId = null;
   let lastX = 0;
   let lastY = 0;
+  let activeStrokeMask = null;
   let wallMode = 'alpha';
   let paintTarget = 'under';
   let paintTargetSuggestion = 'under';
@@ -539,6 +579,10 @@
   const lineCtx = lineLayer.getContext('2d', { willReadFrequently: true });
   const overlayLayer = document.createElement('canvas');
   const overlayCtx = overlayLayer.getContext('2d', { willReadFrequently: true });
+  const strokeLayer = document.createElement('canvas');
+  const strokeCtx = strokeLayer.getContext('2d', { willReadFrequently: true });
+  const strokeMaskLayer = document.createElement('canvas');
+  const strokeMaskCtx = strokeMaskLayer.getContext('2d', { willReadFrequently: true });
 
   // ---------- Image data ----------
   let images = []; // {id, name, img, w, h}
@@ -569,6 +613,39 @@
 
   function clamp(v, min, max) {
     return Math.max(min, Math.min(max, v));
+  }
+
+  function automaticThemeForDate(date = new Date()) {
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    if (month === 1 && day <= 10) return 'newyear';
+    if (month === 2 && day <= 14) return 'love';
+    if (month === 3 && day <= 17) return 'lucky';
+    if (month === 10 && day >= 15) return 'halloween';
+    if (month === 12 || month <= 2) return 'winter';
+    if (month <= 5) return 'spring';
+    if (month <= 8) return 'summer';
+    return 'autumn';
+  }
+
+  function applyThemePreference(preference, persist = true) {
+    const safePreference = preference === 'auto' || THEME_NAMES[preference] ? preference : 'auto';
+    const activeTheme = safePreference === 'auto' ? automaticThemeForDate() : safePreference;
+    document.body.dataset.theme = activeTheme;
+    if (themeSelect) themeSelect.value = safePreference;
+    if (themeStatus) {
+      const prefix = safePreference === 'auto' ? 'Auto: ' : 'Theme: ';
+      themeStatus.textContent = `${prefix}${THEME_NAMES[activeTheme]}`;
+    }
+    if (persist) {
+      try { localStorage.setItem(THEME_STORAGE_KEY, safePreference); } catch (err) { /* storage may be blocked */ }
+    }
+  }
+
+  function initializeSeasonalTheme() {
+    let preference = 'auto';
+    try { preference = localStorage.getItem(THEME_STORAGE_KEY) || 'auto'; } catch (err) { /* storage may be blocked */ }
+    applyThemePreference(preference, false);
   }
 
   function fitWithinDimensions(width, height, maxSide = MAX_IMAGE_DIMENSION) {
@@ -847,11 +924,18 @@
     lineLayer.height = h;
     overlayLayer.width = w;
     overlayLayer.height = h;
+    strokeLayer.width = w;
+    strokeLayer.height = h;
+    strokeMaskLayer.width = w;
+    strokeMaskLayer.height = h;
 
     colorCtx.clearRect(0, 0, w, h);
     colorCtx.fillStyle = '#fff';
     colorCtx.fillRect(0, 0, w, h);
     overlayCtx.clearRect(0, 0, w, h);
+    strokeCtx.clearRect(0, 0, w, h);
+    strokeMaskCtx.clearRect(0, 0, w, h);
+    activeStrokeMask = null;
 
     applyCanvasScale(canvasScale, { preserveCenter: false, silent: true });
   }
@@ -1875,31 +1959,102 @@
     return paintTarget === 'overlay' ? overlayCtx : colorCtx;
   }
 
+  function collectBoundaryRegion(sx, sy) {
+    const w = lineLayer.width;
+    const h = lineLayer.height;
+    if (sx < 0 || sy < 0 || sx >= w || sy >= h) return null;
+
+    const linePixels = lineCtx.getImageData(0, 0, w, h).data;
+    if (isWallPixel(linePixels, ((sy * w) + sx) * 4)) return null;
+
+    const seen = new Uint8Array(w * h);
+    const mask = new Uint8Array(w * h);
+    const stack = [(sy * w) + sx];
+    let count = 0;
+    let touchesEdge = false;
+
+    while (stack.length) {
+      const pos = stack.pop();
+      if (seen[pos]) continue;
+      seen[pos] = 1;
+
+      const x = pos % w;
+      const y = (pos / w) | 0;
+      if (isWallPixel(linePixels, pos * 4)) continue;
+
+      mask[pos] = 1;
+      count += 1;
+      if (x === 0 || y === 0 || x === w - 1 || y === h - 1) touchesEdge = true;
+
+      if (x > 0) stack.push(pos - 1);
+      if (x < w - 1) stack.push(pos + 1);
+      if (y > 0) stack.push(pos - w);
+      if (y < h - 1) stack.push(pos + w);
+    }
+
+    if (!count || touchesEdge) return null;
+    return mask;
+  }
+
+  function prepareBoundaryLockedStroke(sx, sy) {
+    activeStrokeMask = null;
+    strokeMaskCtx.clearRect(0, 0, strokeMaskLayer.width, strokeMaskLayer.height);
+    if (paintTarget === 'overlay') return true;
+
+    const mask = collectBoundaryRegion(sx, sy);
+    if (!mask) return false;
+
+    const maskData = strokeMaskCtx.createImageData(strokeMaskLayer.width, strokeMaskLayer.height);
+    for (let pos = 0; pos < mask.length; pos += 1) {
+      if (!mask[pos]) continue;
+      const offset = pos * 4;
+      maskData.data[offset] = 255;
+      maskData.data[offset + 1] = 255;
+      maskData.data[offset + 2] = 255;
+      maskData.data[offset + 3] = 255;
+    }
+    strokeMaskCtx.putImageData(maskData, 0, 0);
+    activeStrokeMask = mask;
+    return true;
+  }
+
   function strokeSegment(x0, y0, x1, y1, color, radius) {
     const targetCtx = getActivePaintContext();
-    targetCtx.save();
-    targetCtx.lineCap = 'round';
-    targetCtx.lineJoin = 'round';
-    targetCtx.lineWidth = radius * 2;
+    const boundaryLocked = paintTarget === 'under';
+    const drawCtx = boundaryLocked ? strokeCtx : targetCtx;
+
+    if (boundaryLocked) strokeCtx.clearRect(0, 0, strokeLayer.width, strokeLayer.height);
+    drawCtx.save();
+    drawCtx.lineCap = 'round';
+    drawCtx.lineJoin = 'round';
+    drawCtx.lineWidth = radius * 2;
 
     if (currentTool === 'eraser') {
       if (paintTarget === 'overlay') {
-        targetCtx.globalCompositeOperation = 'destination-out';
-        targetCtx.strokeStyle = 'rgba(0, 0, 0, 1)';
+        drawCtx.globalCompositeOperation = 'destination-out';
+        drawCtx.strokeStyle = 'rgba(0, 0, 0, 1)';
       } else {
-        targetCtx.globalCompositeOperation = 'source-over';
-        targetCtx.strokeStyle = 'rgb(255,255,255)';
+        drawCtx.globalCompositeOperation = 'source-over';
+        drawCtx.strokeStyle = 'rgb(255,255,255)';
       }
     } else {
-      targetCtx.globalCompositeOperation = 'source-over';
-      targetCtx.strokeStyle = `rgb(${color[0]},${color[1]},${color[2]})`;
+      drawCtx.globalCompositeOperation = 'source-over';
+      drawCtx.strokeStyle = `rgb(${color[0]},${color[1]},${color[2]})`;
     }
 
-    targetCtx.beginPath();
-    targetCtx.moveTo(x0, y0);
-    targetCtx.lineTo(x1, y1);
-    targetCtx.stroke();
-    targetCtx.restore();
+    drawCtx.beginPath();
+    drawCtx.moveTo(x0, y0);
+    drawCtx.lineTo(x1, y1);
+    drawCtx.stroke();
+    drawCtx.restore();
+
+    if (boundaryLocked && activeStrokeMask) {
+      strokeCtx.save();
+      strokeCtx.globalCompositeOperation = 'destination-in';
+      strokeCtx.drawImage(strokeMaskLayer, 0, 0);
+      strokeCtx.restore();
+      targetCtx.drawImage(strokeLayer, 0, 0);
+    }
   }
 
   function getDrawColor() {
@@ -2437,6 +2592,12 @@
   }
 
   downloadBtn.addEventListener('click', downloadComposite);
+  if (themeSelect) {
+    themeSelect.addEventListener('change', (event) => {
+      applyThemePreference(event.target.value);
+      setStatus(`Seasonal GUI changed to ${themeStatus?.textContent || 'selected theme'}.`);
+    });
+  }
   screenshotBtn.addEventListener('click', screenshotComposite);
   if (dlLink) {
     dlLink.addEventListener('click', (e) => {
@@ -2514,6 +2675,11 @@
       return;
     }
 
+    if (!prepareBoundaryLockedStroke(x, y)) {
+      setStatus('Start inside a fully enclosed area, or choose Over Image for unrestricted drawing.');
+      return;
+    }
+
     pushHistory();
     drawing = true;
     activePointerId = e.pointerId;
@@ -2545,6 +2711,9 @@
     const pointerId = activePointerId;
     drawing = false;
     activePointerId = null;
+    activeStrokeMask = null;
+    strokeCtx.clearRect(0, 0, strokeLayer.width, strokeLayer.height);
+    strokeMaskCtx.clearRect(0, 0, strokeMaskLayer.width, strokeMaskLayer.height);
     if (pointerId != null) {
       try { canvas.releasePointerCapture(pointerId); } catch (err) { /* no-op */ }
     }
@@ -2833,6 +3002,7 @@
   }
 
   (async function init() {
+    initializeSeasonalTheme();
     buildPalette();
     setTool('brush');
     setPaintTarget('under', true);

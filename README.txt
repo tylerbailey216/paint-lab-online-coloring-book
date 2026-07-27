@@ -6,7 +6,7 @@ How to run
 
 Share (easiest setup)
 - Publish this folder with GitHub Pages and share this URL:
-  https://tylerbailey216.github.io/legendary-invention/
+  https://tylerbailey216.github.io/paint-lab-online-coloring-book/
 - Do not share the GitHub repo URL if you want an interactive experience.
 - Social preview image is preconfigured to: social-preview.png (1200x630).
 
@@ -29,6 +29,8 @@ Season admin library
 
 Core tools
 - Brush, Fill, Gradient, Eraser, Eyedropper.
+- Boundary Lock keeps under-line brush and eraser strokes inside the enclosed area where the stroke begins.
+- Use "Over Image" only when unrestricted drawing over lines is intentional.
 - New sticky tool dock keeps core tools visible while scrolling settings/images.
 - Paint Layer toggle: "Under Lines" for coloring pages, "Over Image" for marking regular/transparent artwork.
 - Undo / Redo history for drawing and fills.
@@ -46,6 +48,12 @@ Notes
 - Download button saves the current colored image as PNG.
 - In curated mode, users select from the seasonal image list (no direct file uploads).
 - Black line strokes are rendered above colors so outlines stay visible.
+
+Seasonal GUI themes
+- The interface selects a seasonal GUI automatically from the current date.
+- Automatic themes include Spring, Summer, Autumn, Winter, Love, Lucky, Halloween, and New Year.
+- Users can preview or keep a specific GUI from the Seasonal GUI selector.
+- The selected preference is stored locally in the browser.
 
 Keyboard shortcuts
 - B = Brush, F = Fill, G = Gradient, E = Eraser, I = Eyedropper
