@@ -42,6 +42,10 @@ Core tools
 - Gradient is boundary-locked under line art and will not paint over outlines.
 - Converter controls: edge threshold, line thickness, and despeckle size.
 - Mouse, touch, and stylus drawing support.
+- Zoom from 20% to 400% with the visible Settings slider and Fit / - / + buttons.
+- Scroll the mouse wheel over the artwork to zoom toward the pointer for detailed coloring.
+- On touchscreens, pinch with two fingers to zoom toward the gesture or double-tap an area for quick 150% zoom.
+- Pinch and double-tap gestures automatically discard any accidental mark made as the gesture begins.
 
 Notes
 - Works from any folder or USB drive.

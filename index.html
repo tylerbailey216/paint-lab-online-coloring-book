@@ -559,6 +559,25 @@
     grid-column: 1 / -1;
     width: 100%;
   }
+  .portrait-zoom-actions {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1fr;
+    gap: 0.55em;
+  }
+  .portrait-zoom-actions button {
+    min-height: 2.45em;
+    border: 1px solid rgba(255, 220, 133, 0.62);
+    border-radius: 7px;
+    color: #fff;
+    background: color-mix(in srgb, var(--button) 88%, #111);
+    font: inherit;
+    font-weight: 800;
+    cursor: pointer;
+  }
+  .portrait-zoom-actions button:disabled {
+    opacity: 0.45;
+    cursor: default;
+  }
   .portrait-tool-rail {
     position: absolute;
     z-index: 7;
@@ -810,6 +829,14 @@
         <option value="newyear">New Year</option>
       </select>
     </label>
+    <label>Canvas zoom <output id="portraitZoomLabel">100%</output>
+      <input id="portraitZoomRange" type="range" min="20" max="400" step="5" value="100">
+    </label>
+    <div class="portrait-zoom-actions" role="group" aria-label="Canvas zoom">
+      <button id="portraitZoomOutBtn" type="button">−</button>
+      <button id="portraitZoomFitBtn" type="button">Fit</button>
+      <button id="portraitZoomInBtn" type="button">+</button>
+    </div>
   </section>
 
   <nav class="portrait-tool-rail" aria-label="Painting tools">
@@ -1092,6 +1119,11 @@
   const portraitLineRange = document.getElementById('portraitLineRange');
   const portraitLineLabel = document.getElementById('portraitLineLabel');
   const portraitThemeSelect = document.getElementById('portraitThemeSelect');
+  const portraitZoomRange = document.getElementById('portraitZoomRange');
+  const portraitZoomLabel = document.getElementById('portraitZoomLabel');
+  const portraitZoomOutBtn = document.getElementById('portraitZoomOutBtn');
+  const portraitZoomFitBtn = document.getElementById('portraitZoomFitBtn');
+  const portraitZoomInBtn = document.getElementById('portraitZoomInBtn');
   const portraitPaintLayerBtn = document.getElementById('portraitPaintLayerBtn');
   const portraitToolBtns = [...document.querySelectorAll('[data-portrait-tool]')];
   const tabBtns = [...document.querySelectorAll('.tab-btn')];
@@ -1133,6 +1165,19 @@
   let activePointerId = null;
   let lastX = 0;
   let lastY = 0;
+  const touchPointers = new Map();
+  const ignoredTouchEnds = new Set();
+  let pinching = false;
+  let pinchStartDistance = 0;
+  let pinchStartScale = 1;
+  let gestureSnapshot = null;
+  let gestureUndoDepth = 0;
+  let touchStartPoint = null;
+  let lastTapTime = 0;
+  let lastTapX = 0;
+  let lastTapY = 0;
+  let lastTapSnapshot = null;
+  let lastTapUndoDepth = 0;
   let activeStrokeMask = null;
   let wallMode = 'alpha';
   let paintTarget = 'under';
@@ -1514,11 +1559,16 @@
   }
 
   function updateZoomUI() {
+    const percent = Math.round(canvasScale * 100);
     if (zoomValueLabel) {
-      zoomValueLabel.textContent = `${Math.round(canvasScale * 100)}%`;
+      zoomValueLabel.textContent = `${percent}%`;
     }
     if (zoomOutBtn) zoomOutBtn.disabled = canvasScale <= (MIN_CANVAS_SCALE + 0.001);
     if (zoomInBtn) zoomInBtn.disabled = canvasScale >= (MAX_CANVAS_SCALE - 0.001);
+    if (portraitZoomLabel) portraitZoomLabel.textContent = `${percent}%`;
+    if (portraitZoomRange) portraitZoomRange.value = String(percent);
+    if (portraitZoomOutBtn) portraitZoomOutBtn.disabled = canvasScale <= (MIN_CANVAS_SCALE + 0.001);
+    if (portraitZoomInBtn) portraitZoomInBtn.disabled = canvasScale >= (MAX_CANVAS_SCALE - 0.001);
   }
 
   function getZoomStep(scale = canvasScale) {
@@ -1577,6 +1627,21 @@
     }
 
     updateZoomUI();
+    if (!silent) setStatus(`Zoom ${Math.round(canvasScale * 100)}%.`);
+  }
+
+  function applyCanvasScaleAtClientPoint(nextScale, clientX, clientY, silent = false) {
+    if (!canvasViewport) return;
+    const rect = canvasViewport.getBoundingClientRect();
+    const localX = clamp(clientX - rect.left, 0, canvasViewport.clientWidth);
+    const localY = clamp(clientY - rect.top, 0, canvasViewport.clientHeight);
+    const previousScale = canvasScale || 1;
+    const contentX = (canvasViewport.scrollLeft + localX) / previousScale;
+    const contentY = (canvasViewport.scrollTop + localY) / previousScale;
+
+    applyCanvasScale(nextScale, { preserveCenter: false, silent: true });
+    canvasViewport.scrollLeft = Math.max(0, (contentX * canvasScale) - localX);
+    canvasViewport.scrollTop = Math.max(0, (contentY * canvasScale) - localY);
     if (!silent) setStatus(`Zoom ${Math.round(canvasScale * 100)}%.`);
   }
 
@@ -3175,6 +3240,18 @@
       setStatus(`Seasonal GUI changed to ${THEME_NAMES[document.body.dataset.theme] || 'selected theme'}.`);
     });
   }
+  if (portraitZoomRange) {
+    portraitZoomRange.addEventListener('input', (event) => {
+      applyCanvasScale((parseInt(event.target.value, 10) || 100) / 100, {
+        preserveCenter: true,
+        silent: true
+      });
+      setStatus(`Zoom ${Math.round(canvasScale * 100)}%.`);
+    });
+  }
+  if (portraitZoomOutBtn) portraitZoomOutBtn.addEventListener('click', () => nudgeCanvasScale(-1));
+  if (portraitZoomFitBtn) portraitZoomFitBtn.addEventListener('click', () => fitCanvasToViewport());
+  if (portraitZoomInBtn) portraitZoomInBtn.addEventListener('click', () => nudgeCanvasScale(1));
   paintTargetBtn.addEventListener('click', () => {
     setPaintTarget(paintTarget === 'overlay' ? 'under' : 'overlay');
   });
@@ -3316,9 +3393,10 @@
 
   if (canvasViewport) {
     canvasViewport.addEventListener('wheel', (e) => {
-      if (!(e.ctrlKey || e.metaKey)) return;
       e.preventDefault();
-      nudgeCanvasScale(e.deltaY < 0 ? 1 : -1);
+      const direction = e.deltaY < 0 ? 1 : -1;
+      const delta = getZoomStep(canvasScale) * direction;
+      applyCanvasScaleAtClientPoint(canvasScale + delta, e.clientX, e.clientY);
     }, { passive: false });
   }
 
@@ -3334,8 +3412,66 @@
 
   fileInput.addEventListener('click', () => setSidebarTab('images', true));
 
+  function restoreGestureSnapshot(snapshot, undoDepth) {
+    if (!snapshot || !applyLayerSnapshot(snapshot)) return;
+    undoStack.length = Math.min(undoStack.length, undoDepth);
+    redoStack.length = 0;
+    drawComposite();
+    saveColorLayerFor(imgIndex);
+    updateHistoryButtons();
+  }
+
+  function touchDistance() {
+    const points = [...touchPointers.values()];
+    if (points.length < 2) return 0;
+    return Math.hypot(points[1].x - points[0].x, points[1].y - points[0].y);
+  }
+
+  function touchMidpoint() {
+    const points = [...touchPointers.values()];
+    if (points.length < 2) return null;
+    return {
+      x: (points[0].x + points[1].x) / 2,
+      y: (points[0].y + points[1].y) / 2
+    };
+  }
+
   canvas.addEventListener('pointerdown', (e) => {
     if (!images.length) return;
+
+    if (e.pointerType === 'touch') {
+      touchPointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+      if (touchPointers.size === 1) {
+        const now = performance.now();
+        const nearLastTap = Math.hypot(e.clientX - lastTapX, e.clientY - lastTapY) <= 30;
+        if (lastTapTime && (now - lastTapTime) <= 340 && nearLastTap) {
+          restoreGestureSnapshot(lastTapSnapshot, lastTapUndoDepth);
+          const targetScale = canvasScale >= 2.5 ? computeFitScale() : Math.min(MAX_CANVAS_SCALE, canvasScale * 1.5);
+          applyCanvasScaleAtClientPoint(targetScale, e.clientX, e.clientY);
+          lastTapTime = 0;
+          lastTapSnapshot = null;
+          touchPointers.delete(e.pointerId);
+          ignoredTouchEnds.add(e.pointerId);
+          e.preventDefault();
+          return;
+        }
+
+        gestureSnapshot = snapshotColorLayer();
+        gestureUndoDepth = undoStack.length;
+        touchStartPoint = { x: e.clientX, y: e.clientY, time: now };
+      } else if (touchPointers.size === 2) {
+        pinching = true;
+        cancelPointerStroke();
+        restoreGestureSnapshot(gestureSnapshot, gestureUndoDepth);
+        pinchStartDistance = Math.max(1, touchDistance());
+        pinchStartScale = canvasScale;
+        lastTapTime = 0;
+        lastTapSnapshot = null;
+        e.preventDefault();
+        return;
+      }
+    }
 
     const { x, y } = getCanvasPoint(e);
 
@@ -3396,6 +3532,17 @@
   });
 
   canvas.addEventListener('pointermove', (e) => {
+    if (e.pointerType === 'touch' && touchPointers.has(e.pointerId)) {
+      touchPointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      if (pinching && touchPointers.size >= 2) {
+        const midpoint = touchMidpoint();
+        const scale = pinchStartScale * (touchDistance() / Math.max(1, pinchStartDistance));
+        if (midpoint) applyCanvasScaleAtClientPoint(scale, midpoint.x, midpoint.y, true);
+        e.preventDefault();
+        return;
+      }
+    }
+
     if (!drawing || e.pointerId !== activePointerId) return;
 
     const { x, y } = getCanvasPoint(e);
@@ -3421,6 +3568,42 @@
   }
 
   function finishPointerStroke(e) {
+    if (e.pointerType === 'touch') {
+      if (ignoredTouchEnds.delete(e.pointerId)) return;
+      const start = touchStartPoint;
+      const wasPinching = pinching;
+      touchPointers.delete(e.pointerId);
+
+      if (wasPinching) {
+        cancelPointerStroke();
+        if (!touchPointers.size) {
+          pinching = false;
+          pinchStartDistance = 0;
+          setStatus(`Zoom ${Math.round(canvasScale * 100)}%.`);
+          gestureSnapshot = null;
+          touchStartPoint = null;
+        }
+        return;
+      }
+
+      if (start && Math.hypot(e.clientX - start.x, e.clientY - start.y) <= 14 &&
+          (performance.now() - start.time) <= 320) {
+        lastTapTime = performance.now();
+        lastTapX = e.clientX;
+        lastTapY = e.clientY;
+        lastTapSnapshot = gestureSnapshot;
+        lastTapUndoDepth = gestureUndoDepth;
+      } else {
+        lastTapTime = 0;
+        lastTapSnapshot = null;
+      }
+
+      if (!touchPointers.size) {
+        gestureSnapshot = null;
+        touchStartPoint = null;
+      }
+    }
+
     if (!drawing || e.pointerId !== activePointerId) return;
 
     cancelPointerStroke();
