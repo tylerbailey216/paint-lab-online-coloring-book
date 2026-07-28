@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="paint-lab-build" content="2026.07.27.2" />
+<meta name="paint-lab-build" content="2026.07.27.3" />
 <title>Paint Lab Coloring App</title>
 <meta name="description" content="Interactive coloring app with brush, fill, gradient, screenshot export, and transparent line-art conversion." />
 <link rel="canonical" href="https://tylerbailey216.github.io/paint-lab-online-coloring-book/" />
@@ -38,14 +38,10 @@
     --workspace: #323232;
     --border: rgba(255, 255, 255, 0.12);
   }
-  body[data-theme="spring"] { --bg:#17372f; --panel:#245044; --panel-raised:#306b59; --button:#397b66; --button-active:#e48eb1; --workspace:#d9f0e1; --accent:#ff9fc4; --text:#fff8fb; --muted:#c7e5d8; --border:rgba(255,224,237,.25); --theme-art:url("./GUI Themes/Spring Time.png"); }
-  body[data-theme="summer"] { --bg:#073b4c; --panel:#0b6172; --panel-raised:#0f7f8d; --button:#118f9d; --button-active:#ffb703; --workspace:#bdebf2; --accent:#ffd166; --text:#fffdf2; --muted:#c8edf0; --border:rgba(255,240,180,.28); --theme-art:url("./GUI Themes/Summer Nights.png"); }
-  body[data-theme="autumn"] { --bg:#351a12; --panel:#5b2b1c; --panel-raised:#743a23; --button:#884924; --button-active:#d88924; --workspace:#d9b78f; --accent:#f2a93b; --text:#fff6e8; --muted:#e9c9a6; --border:rgba(255,210,139,.26); --theme-art:url("./GUI Themes/Autumn Vibes.png"); }
-  body[data-theme="winter"] { --bg:#10263f; --panel:#173b61; --panel-raised:#235580; --button:#2d6c9d; --button-active:#79bde8; --workspace:#dceef9; --accent:#9ddcff; --text:#f5fbff; --muted:#c1dced; --border:rgba(210,239,255,.28); --theme-art:url("./GUI Themes/Winter Wonderland.png"); }
-  body[data-theme="love"] { --bg:#3e1324; --panel:#681d3a; --panel-raised:#85264a; --button:#a6305d; --button-active:#ef719a; --workspace:#f7d9e3; --accent:#ff8bb1; --text:#fff7fa; --muted:#f2c6d5; --border:rgba(255,210,226,.3); --theme-art:url("./GUI Themes/Love.png"); }
-  body[data-theme="lucky"] { --bg:#102d20; --panel:#185037; --panel-raised:#216b49; --button:#278257; --button-active:#d0a928; --workspace:#dbead8; --accent:#f0cf45; --text:#fffceb; --muted:#c9e2d1; --border:rgba(242,218,112,.28); --theme-art:url("./GUI Themes/Lucky.png"); }
-  body[data-theme="halloween"] { --bg:#1c1228; --panel:#332044; --panel-raised:#4b2a5c; --button:#633375; --button-active:#df6a22; --workspace:#c8adc9; --accent:#ff8426; --text:#fff7ec; --muted:#d9c2df; --border:rgba(255,157,67,.3); --theme-art:url("./GUI Themes/Spooky Halloween.png"); }
-  body[data-theme="newyear"] { --bg:#0b1424; --panel:#17243a; --panel-raised:#25344d; --button:#344765; --button-active:#b99a48; --workspace:#d9d4c5; --accent:#e8c86b; --text:#fffdf3; --muted:#d8d1b9; --border:rgba(240,213,128,.3); --theme-art:url("./GUI Themes/The New Year.png"); }
+  body[data-theme="aero"] { --bg:#0b3f5d; --panel:#155f7c; --panel-raised:#237e99; --button:#1689a4; --button-active:#70cce2; --workspace:#d9f3f8; --accent:#8ee6f4; --text:#f7fdff; --muted:#c9e9f1; --border:rgba(194,240,250,.32); --theme-art:url("./GUI Themes/Aero.png"); }
+  body[data-theme="collegiate"] { --bg:#30100d; --panel:#541713; --panel-raised:#74241d; --button:#812d24; --button-active:#d0a24a; --workspace:#eadfc9; --accent:#e2b85d; --text:#fff8e8; --muted:#e8d1a8; --border:rgba(239,196,103,.32); --theme-art:url("./GUI Themes/Collegiate.png"); }
+  body[data-theme="school"] { --bg:#0b2818; --panel:#124127; --panel-raised:#1d6038; --button:#267047; --button-active:#e3b64d; --workspace:#e1ebdc; --accent:#f0c75a; --text:#fffbea; --muted:#cce0c9; --border:rgba(238,202,102,.3); --theme-art:url("./GUI Themes/Shool Daze.png"); }
+  body[data-theme="autumn"] { --bg:#351208; --panel:#661d0b; --panel-raised:#8a2b0d; --button:#a73d12; --button-active:#f29a24; --workspace:#ead5b9; --accent:#ffad32; --text:#fff6e8; --muted:#efc59a; --border:rgba(255,181,75,.34); --theme-art:url("./GUI Themes/Autumn Vibe 1.png"); }
   * { box-sizing: border-box; }
   html, body { height: 100%; margin: 0; background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif; }
   .app { position: relative; isolation: isolate; display: grid; grid-template-columns: var(--ui) 1fr; height: 100vh; height: 100dvh; overflow: hidden; }
@@ -324,9 +320,9 @@
     .canvas-viewport { padding-top: 76px; }
   }
 
-  /* Summer Nights artwork-shell prototype.
+  /* Portrait artwork shell.
      The proven coloring engine remains unchanged; this block remaps its visible shell
-     into the functional regions of GUI Themes/Summer Nights.png. */
+     into the functional regions of the selected GUI artwork. */
   body.artwork-shell {
     min-height: 100vh;
     overflow: hidden;
@@ -347,7 +343,7 @@
   }
   body.artwork-shell .app::before {
     opacity: 1;
-    background-image: var(--theme-art, url("./GUI Themes/Summer Nights.png"));
+    background-image: var(--theme-art, url("./GUI Themes/Aero.png"));
     background-size: 100% 100%;
     background-position: center;
     filter: none;
@@ -864,7 +860,7 @@
   }
 </style>
 </head>
-<body class="artwork-shell" data-theme="summer">
+<body class="artwork-shell" data-theme="aero">
 <div class="app">
   <header class="portrait-menubar" aria-label="Paint Lab menu">
     <span class="portrait-brand">PAINT LAB</span>
@@ -890,14 +886,10 @@
     <label>Seasonal GUI
       <select id="portraitThemeSelect">
         <option value="auto">Automatic by date</option>
-        <option value="spring">Spring Time</option>
-        <option value="summer">Summer Nights</option>
-        <option value="autumn">Autumn Vibes</option>
-        <option value="winter">Winter Wonderland</option>
-        <option value="love">Love</option>
-        <option value="lucky">Lucky</option>
-        <option value="halloween">Spooky Halloween</option>
-        <option value="newyear">New Year</option>
+        <option value="aero">Aero</option>
+        <option value="collegiate">Collegiate</option>
+        <option value="school">School Daze</option>
+        <option value="autumn">Autumn Vibe</option>
       </select>
     </label>
     <div id="portraitGradientSetting" class="portrait-gradient-setting" aria-label="Gradient colors">
@@ -1056,14 +1048,10 @@
       <label class="small" for="themeSelect">Seasonal GUI</label>
       <select id="themeSelect" aria-label="Seasonal GUI theme">
         <option value="auto">Automatic by date</option>
-        <option value="spring">Spring Time</option>
-        <option value="summer">Summer Nights</option>
-        <option value="autumn">Autumn Vibes</option>
-        <option value="winter">Winter Wonderland</option>
-        <option value="love">Love</option>
-        <option value="lucky">Lucky</option>
-        <option value="halloween">Spooky Halloween</option>
-        <option value="newyear">New Year</option>
+        <option value="aero">Aero</option>
+        <option value="collegiate">Collegiate</option>
+        <option value="school">School Daze</option>
+        <option value="autumn">Autumn Vibe</option>
       </select>
       <div id="themeStatus" class="small"></div>
       <button id="screenshotBtn" class="btn">Screenshot</button>
@@ -1109,14 +1097,10 @@
   const MAX_IMAGE_SAVES = 8;
   const THEME_STORAGE_KEY = 'paintLabThemePreference';
   const THEME_NAMES = {
-    spring: 'Spring Time',
-    summer: 'Summer Nights',
-    autumn: 'Autumn Vibes',
-    winter: 'Winter Wonderland',
-    love: 'Love',
-    lucky: 'Lucky',
-    halloween: 'Spooky Halloween',
-    newyear: 'New Year'
+    aero: 'Aero',
+    collegiate: 'Collegiate',
+    school: 'School Daze',
+    autumn: 'Autumn Vibe'
   };
   const MAX_IMAGE_DIMENSION = window.matchMedia('(max-width: 900px)').matches ? 1400 : 1800;
   const IMAGE_SOURCE_MODE = 'curated'; // 'curated' or 'userUpload'
@@ -1322,14 +1306,9 @@
 
   function automaticThemeForDate(date = new Date()) {
     const month = date.getMonth() + 1;
-    const day = date.getDate();
-    if (month === 1 && day <= 10) return 'newyear';
-    if (month === 2 && day <= 14) return 'love';
-    if (month === 3 && day <= 17) return 'lucky';
-    if (month === 10 && day >= 15) return 'halloween';
-    if (month === 12 || month <= 2) return 'winter';
-    if (month <= 5) return 'spring';
-    if (month <= 8) return 'summer';
+    if (month <= 3) return 'aero';
+    if (month <= 6) return 'collegiate';
+    if (month <= 9) return 'school';
     return 'autumn';
   }
 

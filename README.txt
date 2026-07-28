@@ -1,6 +1,6 @@
 ﻿Paint Lab Coloring App (Portable)
 
-Build: 2026.07.27.2
+Build: 2026.07.27.3
 
 How to run
 - Double-click "Start Paint Lab Coloring App.cmd" to launch in your default browser.
@@ -57,15 +57,15 @@ Notes
 - Black line strokes are rendered above colors so outlines stay visible.
 
 Seasonal GUI themes
-- The interface selects a seasonal GUI automatically from the current date.
-- Automatic themes include Spring, Summer, Autumn, Winter, Love, Lucky, Halloween, and New Year.
+- The interface selects one of four current GUI designs automatically by calendar quarter.
+- Automatic rotation uses Aero (January-March), Collegiate (April-June), School Daze (July-September), and Autumn Vibe (October-December).
 - Each automatic theme uses its matching design from `GUI Themes` as a responsive decorative backdrop.
 - Users can preview or keep a specific GUI from the Seasonal GUI selector.
 - The selected preference is stored locally in the browser.
 - The active application shell uses the supplied portrait GUI artwork directly.
 - Core tools and the color palette remain visible while coloring; the former landscape/sidebar interface is retired.
 - The left tool rail is fully transparent so the seasonal GUI artwork remains unobstructed behind the tool buttons.
-- The portrait Settings panel switches between eight supplied seasonal GUI graphics or automatic date selection.
+- The portrait Settings panel switches between the four replacement GUI graphics or automatic date selection.
 - Phone layouts top-align the artwork, use compact icon actions, and reduce navigation/palette spacing to avoid crowding.
 
 Coloring page navigation
